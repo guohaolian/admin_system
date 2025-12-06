@@ -11,7 +11,7 @@ import pinia from './store'
 let userStore = useUserStore(pinia)
 //全局守卫:项目当中任意路由切换都会触发的钩子
 //全局前置守卫
-router.beforeEach(async (to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, _from: any, next: any) => {
   document.title = `${setting.title} - ${to.meta.title}`
   //to:你将要访问那个路由
   //from:你从来个路由而来
@@ -44,7 +44,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
           //token过期:获取不到用户信息了
           //用户手动修改本地存储token
           //退出登录->用户相关的数据清空
-          userStore.userLogout()
+          await userStore.userLogout()
           next({ path: '/login', query: { redirect: to.path } })
         }
       }
@@ -59,7 +59,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   }
 })
 //全局后置守卫
-router.afterEach((to: any, from: any) => {
+router.afterEach((_to: any, _from: any) => {
   nprogress.done()
 })
 

@@ -1,21 +1,8 @@
 <template>
-  <el-button
-    size="small"
-    icon="Refresh"
-    circle
-    @click="updateRefsh"
-  ></el-button>
-  <el-button
-    size="small"
-    icon="FullScreen"
-    circle
-    @click="fullScreen"
-  ></el-button>
+  <el-button size="small" icon="Refresh" circle @click="updateRefsh"></el-button>
+  <el-button size="small" icon="FullScreen" circle @click="fullScreen"></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
-  <img
-    :src="userStore.avatar"
-    style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px"
-  />
+  <img :src="userStore.avatar" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px" />
   <el-dropdown style="margin-left: 10px">
     <span class="el-dropdown-link">
       {{ userStore.username }}
@@ -60,11 +47,11 @@ const fullScreen = () => {
   }
 }
 
-const logout = () => {
+const logout = async () => {
   //第一件事情:需要向服务器发请求[退出登录接口]******
   //第二件事情:仓库当中关于用于相关的数据清空[token|username|avatar]
   //第三件事情:跳转到登录页面
-  userStore.userLogout()
+  await userStore.userLogout()
   //跳转到登录页面
   //跳转到登录页面
   $router.push({ path: '/login', query: { redirect: $route.path } })
