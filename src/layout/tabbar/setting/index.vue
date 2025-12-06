@@ -1,8 +1,21 @@
 <template>
-  <el-button size="small" icon="Refresh" circle @click="updateRefsh"></el-button>
-  <el-button size="small" icon="FullScreen" circle @click="fullScreen"></el-button>
+  <el-button
+    size="small"
+    icon="Refresh"
+    circle
+    @click="updateRefsh"
+  ></el-button>
+  <el-button
+    size="small"
+    icon="FullScreen"
+    circle
+    @click="fullScreen"
+  ></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
-  <img :src="userStore.avatar" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px" />
+  <img
+    :src="userStore.avatar"
+    style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px"
+  />
   <el-dropdown style="margin-left: 10px">
     <span class="el-dropdown-link">
       {{ userStore.username }}
