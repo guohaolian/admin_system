@@ -122,7 +122,7 @@
   </el-dialog>
 </template>
 
-<script setup lang="ts" name="hahahha">
+<script setup lang="ts" name="Tradmark">
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import type { ComponentSize, UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'

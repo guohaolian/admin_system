@@ -1,10 +1,11 @@
 // ...existing code...
 import SvgIcon from './SvgIcon/index.vue'
+import Category from './Category/index.vue'
 import type { App, Component, Plugin } from 'vue'
 
 import * as ElementPlusIcons from '@element-plus/icons-vue'
 
-const components: Record<string, Component> = { SvgIcon }
+const components: Record<string, Component> = { SvgIcon, Category }
 
 const globalComponent: Plugin = {
   install(app: App) {
