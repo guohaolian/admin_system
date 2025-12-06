@@ -132,6 +132,8 @@ const addTrademark = () => {
   trademarkParams.logoUrl = ''
   trademarkParams.id = 0
 
+
+
   // 清空校验提示
   // 第一种写法: ts 的问号语法
   // formRef.value?.clearValidate('tmName')
