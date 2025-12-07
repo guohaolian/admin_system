@@ -16,7 +16,7 @@ import type { UserState } from './types/type'
 import { constantRoute } from '@/router/routes'
 // 新增：token 自动过期相关
 const TOKEN_EXPIRE_KEY = 'token_expire'
-const TOKEN_TTL = 30 * 1000 // 30s，毫秒
+const TOKEN_TTL = 30 * 60 * 1000 // 30s，毫秒
 let tokenTimer: ReturnType<typeof setTimeout> | null = null
 
 //创建用户相关的小仓库
