@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
     <h1>我是一级路由展示登陆成功以后的数据{{ userStore.username }}</h1>
