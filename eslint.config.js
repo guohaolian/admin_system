@@ -45,6 +45,8 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       'vue/multi-word-component-names': 'off',
+      'prefer-const': 'off',
+      'no-empty': 'off',
     },
   },
 ])

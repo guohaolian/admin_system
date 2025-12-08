@@ -1,27 +1,15 @@
 <template>
   <el-form label-width="100px">
     <el-form-item label="SPU名称">
-      <el-input
-        placeholder="请输入SPU名称"
-        v-model="SpuParams.spuName"
-      ></el-input>
+      <el-input placeholder="请输入SPU名称" v-model="SpuParams.spuName"></el-input>
     </el-form-item>
     <el-form-item label="SPU品牌">
       <el-select style="width: 240px" v-model="SpuParams.tmId">
-        <el-option
-          v-for="item in allTradeMark"
-          :key="item.id"
-          :label="item.tmName"
-          :value="item.id"
-        ></el-option>
+        <el-option v-for="item in allTradeMark" :key="item.id" :label="item.tmName" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="SPU描述">
-      <el-input
-        type="textarea"
-        placeholder="请输入SPU描述"
-        v-model="SpuParams.description"
-      ></el-input>
+      <el-input type="textarea" placeholder="请输入SPU描述" v-model="SpuParams.description"></el-input>
     </el-form-item>
     <el-form-item label="SPU图片">
       <!-- v-model:fileList -> 展示默认图片
@@ -30,119 +18,56 @@
             on-preview: 预览文件
             on-remove： 删除文件
         -->
-      <el-upload
-        v-model:file-list="imgList"
-        action="/api/admin/product/fileUpload"
-        list-type="picture-card"
-        :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove"
-        :before-upload="handleUpload"
-        :headers="headers"
-      >
+      <el-upload v-model:file-list="imgList" action="/api/admin/product/fileUpload" list-type="picture-card"
+        :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :before-upload="handleUpload"
+        :headers="headers">
         <el-icon>
           <Plus />
         </el-icon>
       </el-upload>
 
       <el-dialog v-model="dialogVisible">
-        <img
-          w-full
-          :src="dialogImageUrl"
-          alt="Preview Image"
-          style="width: 100%; height: 100%"
-        />
+        <img w-full :src="dialogImageUrl" alt="Preview Image" style="width: 100%; height: 100%" />
       </el-dialog>
     </el-form-item>
     <el-form-item label="SPU销售属性">
       <!-- 展示销售属性下拉菜单 -->
-      <el-select
-        style="width: 240px"
-        :placeholder="
-          unSelectSaleAttr.length
-            ? `还未选择${unSelectSaleAttr.length}个`
-            : '无'
-        "
-        v-model="saleAttrIdAndValueName"
-      >
-        <el-option
-          v-for="item in unSelectSaleAttr"
-          :key="item.id"
-          :label="item.name"
-          :value="`${item.id}:${item.name}`"
-        ></el-option>
+      <el-select style="width: 240px" :placeholder="unSelectSaleAttr.length
+        ? `还未选择${unSelectSaleAttr.length}个`
+        : '无'
+        " v-model="saleAttrIdAndValueName">
+        <el-option v-for="item in unSelectSaleAttr" :key="item.id" :label="item.name"
+          :value="`${item.id}:${item.name}`"></el-option>
       </el-select>
-      <el-button
-        style="margin-left: 10px"
-        type="primary"
-        size="default"
-        icon="Plus"
-        :disabled="saleAttrIdAndValueName ? false : true"
-        @click="addSaleAttr"
-      >
+      <el-button style="margin-left: 10px" type="primary" size="default" icon="Plus"
+        :disabled="saleAttrIdAndValueName ? false : true" @click="addSaleAttr">
         添加属性
       </el-button>
       <!-- table 展示销售属性与属性值的地方 -->
       <el-table border style="margin: 10px 0px" :data="saleAttr">
-        <el-table-column
-          label="序号"
-          type="index"
-          align="center"
-          width="80px"
-        ></el-table-column>
-        <el-table-column
-          label="销售属性名字"
-          width="120px"
-          prop="saleAttrName"
-        ></el-table-column>
+        <el-table-column label="序号" type="index" align="center" width="80px"></el-table-column>
+        <el-table-column label="销售属性名字" width="120px" prop="saleAttrName"></el-table-column>
         <el-table-column label="销售属性值">
           <!-- row即为当前spu已有的销售属性对象 -->
           <template v-slot="{ row }">
-            <el-tag
-              v-for="(item, $index) in row.spuSaleAttrValueList"
-              :key="item.id"
-              style="margin: 0px 5px"
-              class="mx-1"
-              closable
-              @close="row.spuSaleAttrValueList.splice($index, 1)"
-            >
+            <el-tag v-for="(item, $index) in row.spuSaleAttrValueList" :key="item.id" style="margin: 0px 5px"
+              class="mx-1" closable @close="row.spuSaleAttrValueList.splice($index, 1)">
               {{ item.saleAttrValueName }}
             </el-tag>
-            <el-input
-              @blur="toLook(row)"
-              v-model="row.saleAttrValue"
-              v-if="row.flag === true"
-              placeholder="请输入属性值"
-              size="small"
-              style="width: 100px"
-            ></el-input>
-            <el-button
-              @click="toEdit(row)"
-              v-else
-              type="primary"
-              size="small"
-              icon="Plus"
-            ></el-button>
+            <el-input @blur="toLook(row)" v-model="row.saleAttrValue" v-if="row.flag === true" placeholder="请输入属性值"
+              size="small" style="width: 100px"></el-input>
+            <el-button @click="toEdit(row)" v-else type="primary" size="small" icon="Plus"></el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="120px">
           <template v-slot="{ $index }">
-            <el-button
-              type="primary"
-              size="small"
-              icon="Delete"
-              @click="saleAttr.splice($index, 1)"
-            ></el-button>
+            <el-button type="primary" size="small" icon="Delete" @click="saleAttr.splice($index, 1)"></el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-form-item>
     <el-form-item>
-      <el-button
-        type="primary"
-        size="default"
-        @click="save"
-        :disabled="saleAttr.length > 0 ? false : true"
-      >
+      <el-button type="primary" size="default" @click="save" :disabled="saleAttr.length > 0 ? false : true">
         保存
       </el-button>
       <el-button type="primary" size="default" @click="cancel">取消</el-button>
@@ -177,13 +102,13 @@ let $emit = defineEmits(['changeScene'])
 const cancel = () => {
   $emit('changeScene', { flag: 0, params: '' })
 }
-
 // 存储已有的SPU这些数据
 const allTradeMark = ref<Trademark[]>([])
 // 商品图片
 const imgList = ref<SpuImg[] | UploadUserFile[]>([])
 // 销售属性
 const saleAttr = ref<SaleAttr[]>([])
+
 // 全部的销售属性
 const allSaleAttr = ref<HasSaleAttr[]>([])
 // 控制图片对话框的现实与隐藏
@@ -326,6 +251,7 @@ const toEdit = (row: SaleAttr) => {
 // 表单元素失去焦点的回调
 const toLook = (row: SaleAttr) => {
   // 整理收集到的属性的ID与属性的名字
+
   const { baseSaleAttrId, saleAttrValue } = row
 
   // 非法情况判断
@@ -342,6 +268,7 @@ const toLook = (row: SaleAttr) => {
     baseSaleAttrId,
     saleAttrValueName: saleAttrValue as string,
   }
+  console.log(newSaleAttrValue);
 
   // 判断属性值是否在数组当中存在
   const repeat = row.spuSaleAttrValueList.find((item) => {
@@ -356,6 +283,7 @@ const toLook = (row: SaleAttr) => {
   }
   // 追加新的属性值对象
   row.spuSaleAttrValueList.push(newSaleAttrValue)
+  console.log(row.spuSaleAttrValueList);
   // 切换为查看模式
   row.flag = false
 }
@@ -398,7 +326,8 @@ const save = async () => {
 // 添加一个新的SPU初始化请求方法
 const initAddSpu = async (c3Id: number | string) => {
   // 清空数据
-  Object.assign(SpuParams.value, {
+  SpuParams.value = {
+    ...SpuParams.value,
     id: 0,
     category3Id: '',
     spuName: '',
@@ -406,7 +335,16 @@ const initAddSpu = async (c3Id: number | string) => {
     tmId: '',
     spuImageList: [],
     spuSaleAttrList: [],
-  })
+  }
+  /* Object.assign(SpuParams.value, {
+    id: 0,
+    category3Id: '',
+    spuName: '',
+    description: '',
+    tmId: '',
+    spuImageList: [],
+    spuSaleAttrList: [],
+  }) */
   // 清空照片墙
   imgList.value = []
   // 清空销售属性
