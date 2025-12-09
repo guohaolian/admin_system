@@ -7,90 +7,32 @@
           添加SPU
         </el-button>
         <el-table style="margin: 10px 0px" border :data="records">
-          <el-table-column
-            label="序号"
-            type="index"
-            width="80px"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="SPU名称"
-            prop="spuName"
-            width="100px"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="SPU描述"
-            prop="description"
-            show-overflow-tooltip
-          ></el-table-column>
+          <el-table-column label="序号" type="index" width="80px" align="center"></el-table-column>
+          <el-table-column label="SPU名称" prop="spuName" width="100px" align="center"></el-table-column>
+          <el-table-column label="SPU描述" prop="description" show-overflow-tooltip></el-table-column>
           <el-table-column label="操作" width="280px" align="center">
             <!-- row:即为已有的SPU对象 -->
             <template v-slot="{ row }">
-              <el-button
-                type="primary"
-                color="orange"
-                size="small"
-                icon="Plus"
-                title="添加SKU"
-                @click="addSku(row)"
-              ></el-button>
-              <el-button
-                type="primary"
-                size="small"
-                icon="Edit"
-                title="修改SPU"
-                @click="updateSpu(row)"
-              ></el-button>
-              <el-button
-                type="primary"
-                color="skyblue"
-                size="small"
-                icon="View"
-                title="查看SKU列表"
-                @click="getSku(row)"
-              ></el-button>
-              <el-popconfirm
-                :title="`确定删除 ${row.spuName} ?`"
-                width="200px"
-                @confirm="deleteSpu(row)"
-              >
+              <el-button type="primary" color="orange" size="small" icon="Plus" title="添加SKU"
+                @click="addSku(row)"></el-button>
+              <el-button type="primary" size="small" icon="Edit" title="修改SPU" @click="updateSpu(row)"></el-button>
+              <el-button type="primary" color="skyblue" size="small" icon="View" title="查看SKU列表"
+                @click="getSku(row)"></el-button>
+              <el-popconfirm :title="`确定删除 ${row.spuName} ?`" width="200px" @confirm="deleteSpu(row)">
                 <template #reference>
-                  <el-button
-                    type="primary"
-                    color="red"
-                    size="small"
-                    icon="Delete"
-                    title="删除SPU"
-                  ></el-button>
+                  <el-button type="primary" color="red" size="small" icon="Delete" title="删除SPU"></el-button>
                 </template>
               </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          @current-change="changePageNo"
-          @size-change="changeSize"
-          v-model:current-page="pageNo"
-          v-model:page-size="pageSize"
-          :page-sizes="[3, 5, 7, 9]"
-          :background="true"
-          :size="size"
-          layout="prev, pager, next, jumper, ->, sizes, total"
-          :total="total"
-        ></el-pagination>
+        <el-pagination @current-change="changePageNo" @size-change="changeSize" v-model:current-page="pageNo"
+          v-model:page-size="pageSize" :page-sizes="[3, 5, 7, 9]" :background="true" :size="size"
+          layout="prev, pager, next, jumper, ->, sizes, total" :total="total"></el-pagination>
       </div>
-      <SpuForm
-        ref="spu"
-        v-show="scene === 1"
-        @changeScene="changeScene"
-      ></SpuForm>
+      <SpuForm ref="spu" v-show="scene === 1" @changeScene="changeScene"></SpuForm>
       <!-- 自定义事件 -->
-      <SkuForm
-        ref="sku"
-        v-show="scene === 2"
-        @changeScene="changeScene"
-      ></SkuForm>
+      <SkuForm ref="sku" v-show="scene === 2" @changeScene="changeScene"></SkuForm>
       <!-- dialog对话框：展示已有的SKU数据 -->
       <el-dialog v-model="show" title="SKU列表">
         <el-table :data="skuArr" border>
@@ -99,10 +41,7 @@
           <el-table-column label="SKU 重量" prop="weight"></el-table-column>
           <el-table-column label="SKU 图片">
             <template v-slot="{ row }">
-              <img
-                :src="row.skuDefaultImg"
-                style="width: 100px; height: 100px"
-              />
+              <img :src="row.skuDefaultImg" style="width: 100px; height: 100px" />
             </template>
           </el-table-column>
         </el-table>
@@ -115,7 +54,7 @@
 // 引入子组件
 import SpuForm from './SpuForm.vue'
 import SkuForm from './SkuForm.vue'
-import { ref, watch } from 'vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
 import { reqHasSpu, reqRemoveSpu, reqSkuList } from '@/api/product/spu'
 
 import type {
