@@ -5,41 +5,21 @@
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
         <!-- 登录的表单 -->
-        <el-form
-          class="login_form"
-          :model="loginForm"
-          :rules="rules"
-          ref="loginForms"
-        >
+        <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForms">
           <h1>Hello</h1>
           <h2>欢迎来到光伏发电功率预测系统</h2>
 
           <el-form-item prop="username">
-            <el-input
-              :prefix-icon="User"
-              v-model="loginForm.username"
-              placeholder="用户名"
-            ></el-input>
+            <el-input :prefix-icon="User" v-model="loginForm.username" placeholder="用户名"></el-input>
           </el-form-item>
 
           <el-form-item prop="password">
-            <el-input
-              :prefix-icon="Lock"
-              v-model="loginForm.password"
-              type="password"
-              show-password
-              placeholder="密码"
-            ></el-input>
+            <el-input :prefix-icon="Lock" v-model="loginForm.password" type="password" show-password
+              placeholder="密码"></el-input>
           </el-form-item>
 
           <el-form-item>
-            <el-button
-              :loading="loading"
-              class="login_btn"
-              type="primary"
-              size="default"
-              @click="login"
-            >
+            <el-button :loading="loading" class="login_btn" type="primary" size="default" @click="login">
               登录
             </el-button>
           </el-form-item>
@@ -80,6 +60,7 @@ const login = async () => {
     //判断登录的时候,路由路径当中是否有query参数，如果有就往query参数挑战，没有跳转到首页
     let redirect: any = $route.query.redirect
     $router.push({ path: redirect || '/' })
+
     //登录成功提示信息
     ElNotification({
       type: 'success',

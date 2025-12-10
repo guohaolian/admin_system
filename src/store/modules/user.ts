@@ -13,7 +13,22 @@ import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import type { UserState } from './types/type'
 
 //引入路由（常量路由）
-import { constantRoute } from '@/router/routes'
+import { constantRoute, asnycRoute, anyRoute } from '@/router/routes'
+// 引入路由实例
+import router, { resetRouter } from '@/router'
+// 引入深拷贝方法
+import cloneDeep from 'lodash/cloneDeep'
+// 用于过滤当前用户需要展示的异步路由
+function filterAsyncRoute(asnycRoute: any, routes: any) {
+  return asnycRoute.filter((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item.children, routes)
+      }
+      return true
+    }
+  })
+}
 // 新增：token 自动过期相关
 const TOKEN_EXPIRE_KEY = 'token_expire'
 const TOKEN_TTL = 60 * 60 * 1000 // 30s，毫秒
@@ -27,6 +42,7 @@ let useUserStore = defineStore('user', {
       menuRoutes: constantRoute, //仓库存贮生成菜单需要数组
       username: '',
       avatar: '',
+      buttons: [],
     }
   },
   getters: {},
@@ -61,6 +77,19 @@ let useUserStore = defineStore('user', {
       if (result.code == 200) {
         this.username = result.data.name
         this.avatar = result.data.avatar
+        this.buttons = result.data.buttons
+        // 计算当前用户需要展示的异步路由
+        const userAsyncRoute = filterAsyncRoute(
+          cloneDeep(asnycRoute),
+          result.data.routes,
+        )
+        // 菜单需要的数据
+        this.menuRoutes = [...constantRoute, ...userAsyncRoute, anyRoute]
+        // 目前路由器管理的只有常量路由，用户计算完毕的异步路由和任意路由需要动态添加
+        const newRoutes = [...userAsyncRoute, anyRoute]
+        newRoutes.forEach((route: any) => {
+          router.addRoute(route)
+        })
 
         return 'ok'
       } else {
@@ -74,6 +103,7 @@ let useUserStore = defineStore('user', {
         this.username = ''
         this.avatar = ''
         REMOVE_TOKEN()
+        resetRouter()
 
         try {
           localStorage.removeItem(TOKEN_EXPIRE_KEY)
