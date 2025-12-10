@@ -19,7 +19,9 @@ enum API {
 
 // 获取全部的角色
 export const reqAllRoleList = (page: number, limit: number, roleName: string) =>
-  request.get<any, RoleResponseData>(API.ALLROLE_URL + `${page}/${limit}?roleName=${roleName}`)
+  request.get<any, RoleResponseData>(
+    API.ALLROLE_URL + `${page}/${limit}?roleName=${roleName}`,
+  )
 
 // 添加或更新角色
 export const reqAddOrUpdateRole = (data: RoleData) => {
@@ -37,7 +39,9 @@ export const reqAllMenuList = (roleId: number) => {
 
 // 给角色分配权限接口
 export const reqSetPermission = (roleId: number, permissionId: number[]) =>
-  request.post<any, any>(API.SETPERMISSION_URL + `roleId=${roleId}&permissionId=${permissionId}`)
+  request.post<any, any>(
+    API.SETPERMISSION_URL + `roleId=${roleId}&permissionId=${permissionId}`,
+  )
 
 // 删除已有角色
 export const reqRemoveRole = (roleId: number) =>

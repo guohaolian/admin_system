@@ -3,55 +3,117 @@
     <el-card style="height: 80px">
       <el-form :inline="true" class="form">
         <el-form-item label="角色搜索">
-          <el-input placeholder="请输入搜索角色名称" v-model="keyword"></el-input>
+          <el-input
+            placeholder="请输入搜索角色名称"
+            v-model="keyword"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="default" :disabled="keyword ? false : true" @click="search">
+          <el-button
+            type="primary"
+            size="default"
+            :disabled="keyword ? false : true"
+            @click="search"
+          >
             搜索
           </el-button>
-          <el-button type="primary" size="default" @click="reset">重置</el-button>
+          <el-button type="primary" size="default" @click="reset">
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card style="margin: 10px 0px">
-      <el-button type="primary" size="default" icon="Plus" @click="addRole">添加角色</el-button>
+      <el-button type="primary" size="default" icon="Plus" @click="addRole">
+        添加角色
+      </el-button>
       <el-table border style="margin: 10px 0px" :data="allRole">
-        <el-table-column type="index" align="center" label="#"></el-table-column>
+        <el-table-column
+          type="index"
+          align="center"
+          label="#"
+        ></el-table-column>
         <el-table-column align="center" label="id" prop="id"></el-table-column>
-        <el-table-column align="center" label="角色名称" show-overflow-tooltip prop="roleName"></el-table-column>
-        <el-table-column align="center" label="创建时间" show-overflow-tooltip prop="createTime"></el-table-column>
-        <el-table-column align="center" label="更新时间" show-overflow-tooltip prop="updateTime"></el-table-column>
+        <el-table-column
+          align="center"
+          label="角色名称"
+          show-overflow-tooltip
+          prop="roleName"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="创建时间"
+          show-overflow-tooltip
+          prop="createTime"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          label="更新时间"
+          show-overflow-tooltip
+          prop="updateTime"
+        ></el-table-column>
         <el-table-column align="center" label="操作" width="300px">
           <!-- row：已有的角色对象 -->
           <template v-slot="{ row }">
-            <el-button type="primary" size="small" icon="User" @click="setPermission(row)">
+            <el-button
+              type="primary"
+              size="small"
+              icon="User"
+              @click="setPermission(row)"
+            >
               分配权限
             </el-button>
-            <el-button type="primary" size="small" icon="Edit" @click="updateRole(row)">
+            <el-button
+              type="primary"
+              size="small"
+              icon="Edit"
+              @click="updateRole(row)"
+            >
               编辑
             </el-button>
 
-            <el-popconfirm :title="`确定删除角色：${row.roleName}?`" width="260px" @confirm="removeRole(row.id)">
+            <el-popconfirm
+              :title="`确定删除角色：${row.roleName}?`"
+              width="260px"
+              @confirm="removeRole(row.id)"
+            >
               <template #reference>
-                <el-button type="primary" size="small" icon="Delete">删除</el-button>
+                <el-button type="primary" size="small" icon="Delete">
+                  删除
+                </el-button>
               </template>
             </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 40]"
-        :background="true" layout=" prev, pager, next, jumper, ->, sizes, total" :total="total"
-        @size-change="handleSizeChange" @current-change="getHasRole" />
+      <el-pagination
+        v-model:current-page="pageNo"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        :background="true"
+        layout=" prev, pager, next, jumper, ->, sizes, total"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="getHasRole"
+      />
     </el-card>
     <!-- 添加角色与更新已有角色 -->
-    <el-dialog v-model="dialogVisite" :title="roleParams.id ? '更新角色' : '添加角色'">
+    <el-dialog
+      v-model="dialogVisite"
+      :title="roleParams.id ? '更新角色' : '添加角色'"
+    >
       <el-form :model="roleParams" :rules="rules" ref="form">
         <el-form-item label="角色名称" prop="roleName">
-          <el-input placeholder="请输入角色名称" v-model="roleParams.roleName"></el-input>
+          <el-input
+            placeholder="请输入角色名称"
+            v-model="roleParams.roleName"
+          ></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button type="primary" size="default" @click="dialogVisite = false">取消</el-button>
+        <el-button type="primary" size="default" @click="dialogVisite = false">
+          取消
+        </el-button>
         <el-button type="primary" size="default" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -62,8 +124,16 @@
       </template>
       <template #default>
         <!-- 树形控件 -->
-        <el-tree style="max-width: 600px" :data="menuArr" show-checkbox node-key="id" :default-expand-all="true"
-          :default-checked-keys="selectArr" :props="defaultProps" ref="tree" />
+        <el-tree
+          style="max-width: 600px"
+          :data="menuArr"
+          show-checkbox
+          node-key="id"
+          :default-expand-all="true"
+          :default-checked-keys="selectArr"
+          :props="defaultProps"
+          ref="tree"
+        />
       </template>
       <template #footer>
         <div style="flex: auto">
@@ -129,7 +199,11 @@ onMounted(() => {
 const getHasRole = async (pager = 1) => {
   // 修改当前页码
   pageNo.value = pager
-  const result: RoleResponseData = await reqAllRoleList(pageNo.value, pageSize.value, keyword.value)
+  const result: RoleResponseData = await reqAllRoleList(
+    pageNo.value,
+    pageSize.value,
+    keyword.value,
+  )
   if (result.code == 200) {
     total.value = result.data.total
     allRole.value = result.data.records

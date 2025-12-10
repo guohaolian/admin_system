@@ -14,7 +14,8 @@ enum API {
 }
 
 // 获取菜单数据
-export const reqAllPermisson = () => request.get<any, PermissionResponsData>(API.ALLPERMISSION_URL)
+export const reqAllPermisson = () =>
+  request.get<any, PermissionResponsData>(API.ALLPERMISSION_URL)
 
 // 添加与更新菜单的方法
 export const reqAddOrUpdateMenu = (data: MenuParams) => {
@@ -26,4 +27,5 @@ export const reqAddOrUpdateMenu = (data: MenuParams) => {
 }
 
 // 删除菜单
-export const reqRemoveMenu = (id: number) => request.delete<any, any>(API.REMOVEMENU_URL + id)
+export const reqRemoveMenu = (id: number) =>
+  request.delete<any, any>(API.REMOVEMENU_URL + id)

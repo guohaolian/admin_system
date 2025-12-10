@@ -1,6 +1,11 @@
 // 用户管理模块接口
 import request from '@/utils/request'
-import type { AllRoleResponseData, SetRoleData, User, UserResponseData } from './type'
+import type {
+  AllRoleResponseData,
+  SetRoleData,
+  User,
+  UserResponseData,
+} from './type'
 // 枚举地址
 enum API {
   // 获取全部已有用户
@@ -21,7 +26,9 @@ enum API {
 
 // 获取用户接口
 export const reqUserList = (page: number, limit: number, username: string) =>
-  request.get<any, UserResponseData>(API.ALLUSER_URL + `${page}/${limit}?username=${username}`)
+  request.get<any, UserResponseData>(
+    API.ALLUSER_URL + `${page}/${limit}?username=${username}`,
+  )
 
 // 添加用户与更新用户接口
 export const reqAddOrUpdateUser = (data: User) => {
@@ -38,7 +45,8 @@ export const reqAllRole = (userId: number) =>
   request.get<any, AllRoleResponseData>(API.ALLROLEURL + userId)
 
 // 分配职务
-export const reqSetUserRole = (data: SetRoleData) => request.post<any, any>(API.SETROLE_URL, data)
+export const reqSetUserRole = (data: SetRoleData) =>
+  request.post<any, any>(API.SETROLE_URL, data)
 
 // 删除某一个账号的信息
 export const reqRemoveUser = (userId: number) =>
