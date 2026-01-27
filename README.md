@@ -44,25 +44,25 @@ mock/                 # Mock 数据
 
 ## 快速开始
 
-1) 安装依赖
+1. 安装依赖
 
 ```
 pnpm install
 ```
 
-2) 启动开发服务
+2. 启动开发服务
 
 ```
 pnpm dev
 ```
 
-3) 构建生产包
+3. 构建生产包
 
 ```
 pnpm build
 ```
 
-4) 本地预览
+4. 本地预览
 
 ```
 pnpm preview
@@ -79,7 +79,7 @@ pnpm preview
 
 ## 环境变量
 
-请在 .env.* 中配置以下变量，用于代理与后端服务地址：
+请在 .env.\* 中配置以下变量，用于代理与后端服务地址：
 
 - VITE_APP_BASE_API：接口前缀（默认 /api）
 - VITE_SERVE：后端服务地址
